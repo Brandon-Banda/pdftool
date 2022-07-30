@@ -1,27 +1,24 @@
 from datetime import date
 import os
+import shutil
 
 date = date.today().strftime("%#m-%d-%Y")
 downloads = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Documents/Work/Downloads')
 main = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Documents/Work/')
+todays = main + date + '/'
 
 os.system('cls') # clear console
 
-### Use Windows explorer Preview pane to quickly check pages
-
-### TODO Files need to move to the current date folder
-
 if not os.path.exists(downloads):
-    print('CREATING FILE...')
+    print('CREATING DOWNLOADS FILE...')
     os.makedirs(downloads)
 
 os.chdir(downloads)
 print('Working in ' + os.getcwd() + "...")
 
-if not os.path.exists(main + date + '/'):
-    print('CREATING FILE...')
-    os.makedirs(main + date + '/')
-
+if not os.path.exists(todays):
+    print('CREATING TODAYS FILE...')
+    os.makedirs(todays)
 
 W3A = "DOC"
 filt = ['DOC', 'Energy', 'Ltd', 'Company','Inc', 'Prod', 'Operat']
@@ -42,10 +39,6 @@ for file in os.listdir():
         os.rename(file,'{}{} #{}.pdf'.format(ftype, date, nid))
         print(file + ' -> ' '{}{} #{}'.format(ftype, date, nid)) #log
 
-#this stuff is for when we progamatically move files from the downloads to todays folder
-#os.chdir(main + date + '/')
-#print('Working in ' + os.getcwd() + "...") #log
-
 print("------------Files Renamed---------")
 
 #now that we know which files are which (besides W3s), we can bring in pyLib to figure out how many pages they have
@@ -55,4 +48,8 @@ print("------------Files Renamed---------")
     #if page = 3 : PRINT UHHHHHHHHHH
     #if page = 4 : delete pages 2, 3
 
-#at the end, purge the folder
+# move renamed files to today's folder
+file_names = os.listdir(downloads)
+for file_name in file_names:
+    shutil.move(os.path.join(downloads, file_name), todays)
+print ('Moved renamed files...')

@@ -5,4 +5,5 @@
 3. Changed folder to RRC and added an IF listdir is empty condition for running
 8/9/22
 
-4.
+4. Implemented a try-catch block with an exception thats allows the script to continue upon the FileNotFoundError. This is a workout for bad code
+8/14/22

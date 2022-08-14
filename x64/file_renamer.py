@@ -26,19 +26,22 @@ if not os.path.exists(todays):
     os.makedirs(todays)
 
 W3A = "DOC"
-filt = ['DOC', 'Energy', 'Ltd', 'Company','Inc', 'Prod', 'Operat']
+filter = ['DOC','Ltd', 'Energy','Company','Inc', 'Prod', 'LLC', 'Group', 'Corp']
 a = "Noti"
 nid = 0
 wid = 0
 
 if not len(os.listdir()) == 0:
     for file in os.listdir():
-        for thing in filt:
-            if thing in file:
-                ftype = "W3A "
-                wid += 1
-                os.rename(file,'{}{} #{}.pdf'.format(ftype, date, wid))
-                print(file + ' -> ' '{}{} #{}'.format(ftype, date, wid)) #log
+        for key in filter:
+            if key in file:
+                try:
+                    ftype = "W3A "
+                    wid += 1
+                    os.rename(file,'{}{} #{}.pdf'.format(ftype, date, wid))
+                    print(file + ' -> ' '{}{} #{}'.format(ftype, date, wid)) #log
+                except FileNotFoundError:
+                    continue
         if a in file:
             ftype = "DN "
             nid += 1

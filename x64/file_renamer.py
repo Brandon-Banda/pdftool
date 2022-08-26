@@ -1,6 +1,7 @@
 from datetime import date
 import os
 import shutil
+import subprocess
 
 date = date.today().strftime("%#m-%d-%Y")
 downloads = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Documents/RRC/Downloads')
@@ -64,3 +65,7 @@ file_names = os.listdir(downloads)
 for file_name in file_names:
     shutil.move(os.path.join(downloads, file_name), todays)
 print ('Moved renamed files...')
+
+FILEBROWSER_PATH = os.path.join(os.getenv('WINDIR'), 'explorer.exe')
+sanitizedTodays = os.path.normpath(todays)
+subprocess.run([FILEBROWSER_PATH, sanitizedTodays])

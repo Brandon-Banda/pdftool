@@ -7,3 +7,6 @@
 
 4. Implemented a try-catch block with an exception thats allows the script to continue upon the FileNotFoundError. This is a workout for bad code
 8/14/22
+
+5. Added subprocess library to open file explorer to today's folder with moved files
+8/26/22

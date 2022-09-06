@@ -18,3 +18,11 @@
 
 7. Did a lot of the PDF stuff. A lot
 9/5/22
+
+shututil seemed to work better than os for copying files
+
+It seems easier to copy and write to a separate folder instead of over itself so i logged and filled an array to iterate over which contains the files to delete the rest of the files will be moved by the code in the original first script
+
+OS wont let you rename/delete files while the file is open in an Object, so you must close it first. Best to use a context manager like "with open" which will auto close the file upon finishing the code in its indent block
+
+

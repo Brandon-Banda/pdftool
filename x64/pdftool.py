@@ -57,6 +57,19 @@ pages_to_keep = [0, 1, 2, 3] # 4 pagers
 pages_to_keep2 = [0, 3] # 4 pagers trimmed to 2 pages
 delete_list = []
 
+def handleFourPagers(x): # im cringe
+    fourPageCopyHandler = PdfFileWriter()
+    shutil.copyfile(x, normalTodays  + '/' + x)
+    print('Made a copy of ' + x)
+    for i in pages_to_keep2:
+        p = pdfObj.getPage(i)
+        fourPageCopyHandler.addPage(p)
+    fileName = os.path.splitext(x)[0]
+    with open(normalTodays  + '/' + fileName + ' - Copy.pdf', 'wb') as f:
+        fourPageCopyHandler.write(f)
+    print('Trimmed ' + x+ ' into a 2 page W3A for Drillinginfo -')
+    delete_list.append(x)
+
 for file in os.listdir():
     with open(file, "rb") as f:
         pdfObj = PdfFileReader(f)
@@ -72,7 +85,6 @@ for file in os.listdir():
             print('Trimmed ' + file + ' down to 1 page -')
             delete_list.append(file)
 
-
         if pagecount > 4: # Produce normal 4 page W3As
             fourPageHandler = PdfFileWriter()
             for i in pages_to_keep:
@@ -81,7 +93,10 @@ for file in os.listdir():
             with open(normalTodays  + '/' + file, 'wb') as f:
                 fourPageHandler.write(f)
             print('Trimmed ' + file + ' down to 4 page -')
+            fileName = os.path.splitext(file)[0]
+            print(str(pagecount) + " pages in file : " + file)  # at this point it still says the pagecount is 5, this backs up that "file" is still the shit one...
             delete_list.append(file)
+            #handleFourPagers(file) # i'm sending the shit one to the function. i need to send the actual trimmed 4 pager which is lost in memory atm
 
         if pagecount == 4: # Take 4 page W3As and trim pages 2 and 3
             fourPageCopyHandler = PdfFileWriter()
@@ -113,7 +128,7 @@ if not len(os.listdir()) == 0:
     sanitizedTodays = os.path.normpath(todays)
     subprocess.run([FILEBROWSER_PATH, sanitizedTodays])
 
-else:
+elif len(os.listdir(todays)) == 0:
     FILEBROWSER_PATH = os.path.join(os.getenv('WINDIR'), 'explorer.exe')
     sanitizedDownloads = os.path.normpath(downloads)
     subprocess.run([FILEBROWSER_PATH, sanitizedDownloads])

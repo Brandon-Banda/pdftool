@@ -10,3 +10,11 @@
 
 5. Added subprocess library to open file explorer to today's folder with moved files
 8/26/22
+
+6. Conditonalized a couple things so if there isnt a file then most of the script doesnt run
+   Added functionality to open file explorer to Downloads folder if no file is present
+   Added a runtime function to log how long it takes to run
+9/5/22
+
+7. Did a lot of the PDF stuff. A lot
+9/5/22

@@ -2,6 +2,9 @@ from datetime import date
 import os
 import shutil
 import subprocess
+import time
+
+startTime = time.time() #logging runtime
 
 date = date.today().strftime("%#m-%d-%Y")
 downloads = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Documents/RRC/Downloads')
@@ -26,9 +29,7 @@ if not os.path.exists(todays):
     print('CREATING TODAYS FILE...')
     os.makedirs(todays)
 
-W3A = "DOC"
 filter = ['DOC','Ltd', 'Energy','Company','Inc', 'Prod', 'LLC', 'Group', 'Corp']
-a = "Noti"
 nid = 0
 wid = 0
 
@@ -37,35 +38,34 @@ if not len(os.listdir()) == 0:
         for key in filter:
             if key in file:
                 try:
-                    ftype = "W3A "
                     wid += 1
-                    os.rename(file,'{}{} #{}.pdf'.format(ftype, date, wid))
-                    print(file + ' -> ' '{}{} #{}'.format(ftype, date, wid)) #log
+                    os.rename(file,'{}{} #{}.pdf'.format("W3A ", date, wid))
+                    print(file + ' -> ' '{}{} #{}'.format("W3A ", date, wid)) #log
                 except FileNotFoundError:
                     continue
-        if a in file:
-            ftype = "DN "
+        if 'Noti' in file:
             nid += 1
-            os.rename(file,'{}{} #{}.pdf'.format(ftype, date, nid))
-            print(file + ' -> ' '{}{} #{}'.format(ftype, date, nid)) #log
+            os.rename(file,'{}{} #{}.pdf'.format("DN ", date, nid))
+            print(file + ' -> ' '{}{} #{}'.format("DN ", date, nid)) #log
+    print("------------Files Renamed---------")
 else:
     print('No files to work with')
-    
-print("------------Files Renamed---------")
 
-#now that we know which files are which (besides W3s), we can bring in pyLib to figure out how many pages they have
-# logic for this is :
-    #while page > 5 : delete page 5,  OR delete every page beyond number 5
-    #if page = 2 : delete page 2
-    #if page = 3 : PRINT UHHHHHHHHHH
-    #if page = 4 : delete pages 2, 3
+# move renamed files to today's folder and open it in file explorer
+# otherwise if no files, open downloads folder
+if not len(os.listdir()) == 0:
+    file_names = os.listdir(downloads)
+    for file_name in file_names:
+        shutil.move(os.path.join(downloads, file_name), todays)
+    print ('Moved renamed files...')
+    FILEBROWSER_PATH = os.path.join(os.getenv('WINDIR'), 'explorer.exe')
+    sanitizedTodays = os.path.normpath(todays)
+    subprocess.run([FILEBROWSER_PATH, sanitizedTodays])
 
-# move renamed files to today's folder
-file_names = os.listdir(downloads)
-for file_name in file_names:
-    shutil.move(os.path.join(downloads, file_name), todays)
-print ('Moved renamed files...')
+else:
+    FILEBROWSER_PATH = os.path.join(os.getenv('WINDIR'), 'explorer.exe')
+    sanitizedDownloads = os.path.normpath(downloads)
+    subprocess.run([FILEBROWSER_PATH, sanitizedDownloads])
 
-FILEBROWSER_PATH = os.path.join(os.getenv('WINDIR'), 'explorer.exe')
-sanitizedTodays = os.path.normpath(todays)
-subprocess.run([FILEBROWSER_PATH, sanitizedTodays])
+executionTime = (time.time() - startTime)
+print('Runtime: ' + str(executionTime) + ' seconds')

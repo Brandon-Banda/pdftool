@@ -4,17 +4,32 @@ import shutil
 import subprocess
 import time
 from PyPDF2 import PdfFileWriter, PdfFileReader
+from sys import platform
 
 startTime = time.time() #logging runtime
 
 date = date.today().strftime("%#m-%d-%Y")
-downloads = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Documents/RRC/Downloads')
-main = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Documents/RRC/')
-archive = main + '/archive/'
-todays = archive + date + '/'
-normalTodays = os.path.normpath(todays).replace("\\","/")
+
+if platform == "win32":
+    downloads = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Documents/RRC/Downloads')
+    main = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Documents/RRC/')
+    archive = main + '/archive/'
+    todays = archive + date + '/'
+    normalTodays = os.path.normpath(todays).replace("\\","/")
+    FILEBROWSER_PATH = os.path.join(os.getenv('WINDIR'), 'explorer.exe')
+    sanitizedTodays = os.path.normpath(todays)
+    sanitizedDownloads = os.path.normpath(downloads)
+    os.system('cls') # clear console
  
-os.system('cls') # clear console
+elif platform == 'linux' or platform == 'linux2':
+    downloads = os.path.join(os.path.expanduser('~'), 'Documents/rrc/downloads/')
+    main = os.path.join(os.path.expanduser('~'), 'Documents/rrc/')
+    archive = main + '/archive/'
+    todays = archive + date + '/'
+    FILEBROWSER_PATH = "xdg-open"
+    sanitizedTodays = todays # os.path.normpath(todays)
+    sanitizedDownloads = downloads # os.path.normpath(downloads)
+    normalTodays = todays
 
 if not os.path.exists(downloads):
     print('CREATING DOWNLOADS FILE...')
@@ -113,9 +128,10 @@ for file in os.listdir():
 
 # cleanup function to delete all files in the folder
 
-print ('Deleting... ' + str(delete_list))
-for i in delete_list:
-    os.remove(i)
+if not len(os.listdir()) == 0:
+    print ('Deleting... ' + str(delete_list))
+    for i in delete_list:
+        os.remove(i)
 
 # move renamed files to today's folder and open it in file explorer
 # otherwise if no files, open downloads folder
@@ -124,13 +140,9 @@ if not len(os.listdir()) == 0:
     for file_name in file_names:
         shutil.move(os.path.join(downloads, file_name), todays)
     print ('Moved renamed files...')
-    FILEBROWSER_PATH = os.path.join(os.getenv('WINDIR'), 'explorer.exe')
-    sanitizedTodays = os.path.normpath(todays)
     subprocess.run([FILEBROWSER_PATH, sanitizedTodays])
 
 elif len(os.listdir(todays)) == 0:
-    FILEBROWSER_PATH = os.path.join(os.getenv('WINDIR'), 'explorer.exe')
-    sanitizedDownloads = os.path.normpath(downloads)
     subprocess.run([FILEBROWSER_PATH, sanitizedDownloads])
 
 executionTime = (time.time() - startTime)

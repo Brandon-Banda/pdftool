@@ -31,6 +31,16 @@ elif platform == 'linux' or platform == 'linux2':
     sanitizedDownloads = downloads # os.path.normpath(downloads)
     normalTodays = todays
 
+elif platform =='darwin':
+    downloads = os.path.join(os.path.expanduser('~'), 'Documents/rrc/downloads/')
+    main = os.path.join(os.path.expanduser('~'), 'Documents/rrc/')
+    archive = main + '/archive/'
+    todays = archive + date + '/'
+    FILEBROWSER_PATH = "open"
+    sanitizedTodays = todays # os.path.normpath(todays)
+    sanitizedDownloads = downloads # os.path.normpath(downloads)
+    normalTodays = todays   
+
 if not os.path.exists(downloads):
     print('CREATING DOWNLOADS FILE...')
     os.makedirs(downloads)

@@ -3,21 +3,21 @@
 2. wrote variables using pythons env variable for USERPROFILE for paths for neater code and ability to run on more than one machine
 
 3. Changed folder to RRC and added an IF listdir is empty condition for running
-   8/9/22
+8/9/22
 
 4. Implemented a try-catch block with an exception thats allows the script to continue upon the FileNotFoundError. This is a workout for bad code
-   8/14/22
+8/14/22
 
 5. Added subprocess library to open file explorer to today's folder with moved files
-   8/26/22
+8/26/22
 
 6. Conditonalized a couple things so if there isnt a file then most of the script doesnt run
    Added functionality to open file explorer to Downloads folder if no file is present
    Added a runtime function to log how long it takes to run
-   9/5/22
+9/5/22
 
 7. Did a lot of the PDF stuff. A lot
-   9/5/22
+9/5/22
 
 shututil seemed to work better than os for copying files
 
@@ -29,5 +29,12 @@ os.path.normpath returns "a\\b\\c\\d" like for file explorer. can use replace ('
 
 merged the two scripts finally
 
-8. Added compatibility for linux
-   9/13/22
+8. 1/21/24 - 1/26/24
+Ton of UI stuff with tkiner -> custom tkinter
+Restructuring, trying to get it to run more logically and sequentially
+More run conditionals
+
+
+----
+
+IVE GOTTA FIX it not recognizing 'noti' but it recognizes Noti
